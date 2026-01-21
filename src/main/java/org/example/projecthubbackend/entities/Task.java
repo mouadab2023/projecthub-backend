@@ -36,6 +36,7 @@ public class Task {
     private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Priority priority;
 
     @Builder.Default
