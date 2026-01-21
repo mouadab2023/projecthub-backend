@@ -42,6 +42,16 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Status status=Status.TODO;
 
+    @Valid
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Project project;
+
+    @Valid
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User assignee;
+
+
     @CreationTimestamp
     private LocalDateTime createTime;
 
@@ -50,4 +60,3 @@ public class Task {
 
 
 }
-
