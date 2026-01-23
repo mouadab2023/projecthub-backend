@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-public class InsertUserDtoValidationTest {
+public class InsertReadUserDtoValidationTest {
     private static Validator validator;
     @BeforeAll
     public static void setup(){
