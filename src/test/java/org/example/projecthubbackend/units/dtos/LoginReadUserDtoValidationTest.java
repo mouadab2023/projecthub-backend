@@ -4,14 +4,13 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.example.projecthubbackend.dtos.user.LoginUserDto;
-import org.example.projecthubbackend.dtos.user.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-public class LoginUserDtoValidationTest {
+public class LoginReadUserDtoValidationTest {
     private static Validator validator;
     @BeforeAll
     public static void setup(){

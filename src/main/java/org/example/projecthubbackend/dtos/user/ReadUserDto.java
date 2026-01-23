@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 
-public class UserDto {
+public class ReadUserDto {
 
     @NotNull
     Long id;
