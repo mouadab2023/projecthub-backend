@@ -37,16 +37,16 @@ public class ProjectMapperTest {
         ProjectDto projectDto = projectMapper.toDTO(project);
 
         Assertions.assertNotNull(projectDto);
-        Assertions.assertEquals(projectDto.getName(),project.getName());
-        Assertions.assertEquals(projectDto.getStartDate(),project.getStartDate());
-        Assertions.assertEquals(projectDto.getEndDate(),project.getEndDate());
-        Assertions.assertEquals(projectDto.getOwner(),project.getOwner().getId());
+        Assertions.assertEquals(project.getName(),projectDto.getName());
+        Assertions.assertEquals(project.getStartDate(),projectDto.getStartDate());
+        Assertions.assertEquals(project.getEndDate(),projectDto.getEndDate());
+        Assertions.assertEquals(project.getOwner().getId(),projectDto.getOwner());
         List<Long> dtoTaskIds = projectDto.getTasks();
         List<Long> entityTaskIds = project.getTasks().stream()
                 .map(Task::getId)
                 .collect(Collectors.toList());
 
-        Assertions.assertEquals(dtoTaskIds, entityTaskIds, "Les IDs des tasks ne correspondent pas");
+        Assertions.assertEquals( entityTaskIds, dtoTaskIds,"Les IDs des tasks ne correspondent pas");
     }
     @Test
     public void  shouldMapProjectDtoToProject(){
