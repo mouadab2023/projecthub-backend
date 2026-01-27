@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectDto{
+public class ProjectDto {
     @NotNull(groups = Update.class)
     Long id;
 

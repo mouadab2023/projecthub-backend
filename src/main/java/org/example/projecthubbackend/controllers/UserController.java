@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 @RestController
 public class UserController {
-    private final UserService userService;
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -32,7 +32,7 @@ public class UserController {
 
         Object principal = authentication.getPrincipal();
 
-        ReadUserDto authenticatedUser=userService.toReadUserDto((User) principal);
+        ReadUserDto authenticatedUser = userService.toReadUserDto((User) principal);
         return ResponseEntity.ok(authenticatedUser);
     }
 

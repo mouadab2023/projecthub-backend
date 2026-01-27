@@ -41,7 +41,7 @@ public class Task {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    private Status status=Status.TODO;
+    private Status status = Status.TODO;
 
     @Valid
     @NotNull

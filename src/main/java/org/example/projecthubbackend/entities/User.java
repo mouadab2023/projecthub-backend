@@ -47,17 +47,17 @@ public class User implements UserDetails {
 
     @Builder.Default
     @Valid
-    @OneToMany(mappedBy = "owner",cascade ={CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.EAGER)
-    private List<Project> projects=new ArrayList<>();
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    private List<Project> projects = new ArrayList<>();
 
     @Builder.Default
     @NotNull
-    private List<String> roles=new ArrayList<>();
+    private List<String> roles = new ArrayList<>();
 
     @Builder.Default
     @Valid
-    @OneToMany(mappedBy = "assignee",fetch = FetchType.EAGER)
-    private List<Task> assignedTasks=new ArrayList<>();
+    @OneToMany(mappedBy = "assignee", fetch = FetchType.EAGER)
+    private List<Task> assignedTasks = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createTime;
@@ -65,23 +65,26 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updateTime;
 
-    public void addProject(Project project){
-        if(!projects.contains(project)){
+    public void addProject(Project project) {
+        if (!projects.contains(project)) {
             projects.add(project);
             project.setOwner(this);
         }
     }
-    public void removeProject(Project project){
+
+    public void removeProject(Project project) {
         projects.remove(project);
         project.setOwner(null);
     }
-    public void addAssignedTask(Task task){
-        if(!assignedTasks.contains(task)){
+
+    public void addAssignedTask(Task task) {
+        if (!assignedTasks.contains(task)) {
             assignedTasks.add(task);
             task.setAssignee(this);
         }
     }
-    public void removeAssignedTask(Task task){
+
+    public void removeAssignedTask(Task task) {
         assignedTasks.remove(task);
         task.setAssignee(null);
     }
@@ -95,6 +98,7 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

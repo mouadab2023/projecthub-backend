@@ -1,7 +1,6 @@
 package org.example.projecthubbackend.configs;
 
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,9 +28,9 @@ public class ApplicationConfiguration {
     AuthenticationProvider authenticationProvider(
             UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder) {
-         DaoAuthenticationProvider authenticationProvider= new DaoAuthenticationProvider(userDetailsService);
-         authenticationProvider.setPasswordEncoder(passwordEncoder);
-         return authenticationProvider;
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
 
     }
 

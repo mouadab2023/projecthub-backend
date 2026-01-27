@@ -29,7 +29,7 @@ public class TaskDto {
     private Priority priority;
 
     @Builder.Default
-    private Status status=Status.TODO;
+    private Status status = Status.TODO;
 
     @NotNull
     private Long project;
