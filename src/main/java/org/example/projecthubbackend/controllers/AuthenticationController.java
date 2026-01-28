@@ -41,4 +41,12 @@ public class AuthenticationController {
         LoginResponse loginResponse = authenticationService.refresh(refreshToken, response);
         return ResponseEntity.ok(loginResponse);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@CookieValue(value = "REFRESH_TOKEN", required = false) String refreshToken,HttpServletResponse response) {
+        if (refreshToken == null) throw new UnauthorizedException("Unauthorized: missing refresh token");
+        authenticationService.logout(refreshToken, response);
+        return ResponseEntity.noContent().build();
+    }
+
 }

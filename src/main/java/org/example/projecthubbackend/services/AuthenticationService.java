@@ -96,4 +96,17 @@ public class AuthenticationService {
                 .expiresIn(jwtService.getExpirationTime())
                 .user(userService.toReadUserMinDto(authenticatedUser)).build();
     }
+    @Transactional
+    public void logout(String refreshToken,HttpServletResponse response) {
+        RefreshToken fetchedRefreshToken = refreshTokenService.findByToken(refreshToken).orElseThrow(UnauthorizedException::new);
+        fetchedRefreshToken.setValid(false);
+        refreshTokenService.updateRefreshToken(fetchedRefreshToken);
+
+        Cookie cookie = new Cookie("REFRESH_TOKEN", "");
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+    }
 }
