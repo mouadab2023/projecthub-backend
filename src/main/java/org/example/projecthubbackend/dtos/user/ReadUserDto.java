@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -28,6 +29,9 @@ public class ReadUserDto {
     private String email;
 
     private String avatarUrl;
+
+    @NotNull
+    private Set<String> roles;
 
     private List<Long> projects;
 

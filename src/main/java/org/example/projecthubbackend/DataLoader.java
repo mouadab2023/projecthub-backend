@@ -11,7 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Data
@@ -27,8 +29,8 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        List<String> roles = new ArrayList<>();
-        roles.add("admin");
+        Set<String> roles = new HashSet<>();
+        roles.add("ROLE_ADMIN");
 
         User user = User.builder().
                 firstName("alexis").
