@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -25,4 +27,7 @@ public class ReadUserMinDto {
     private String email;
 
     private String avatarUrl;
+
+    @NotNull
+    private Set<String> roles;
 }

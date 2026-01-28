@@ -27,6 +27,7 @@ public class UserMapper {
                 user.getLastName(),
                 user.getEmail(),
                 user.getAvatarUrl(),
+                user.getRoles(),
                 projectIds,
                 assignedTaskIds
         );
@@ -38,7 +39,8 @@ public class UserMapper {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.getAvatarUrl()
-        );
+                user.getAvatarUrl(),
+                user.getRoles()
+                );
     }
 }
