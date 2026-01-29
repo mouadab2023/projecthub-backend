@@ -14,6 +14,7 @@ public class ProjectMapper {
 
     public  ProjectDto toDTO(Project project){
         return ProjectDto.builder().
+                id(project.getId()).
                 name(project.getName()).
                 startDate(project.getStartDate()).
                 endDate(project.getEndDate()).
@@ -24,6 +25,7 @@ public class ProjectMapper {
 
     public Project toEntityBasics(ProjectDto projectDto){
         return Project.builder().
+                id(projectDto.getId()).
                 name(projectDto.getName()).
                 startDate(projectDto.getStartDate()).
                 endDate(projectDto.getEndDate()).

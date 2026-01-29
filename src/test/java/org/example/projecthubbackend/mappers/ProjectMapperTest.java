@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
 public class ProjectMapperTest {
 
     @Autowired
@@ -37,6 +36,7 @@ public class ProjectMapperTest {
         ProjectDto projectDto = projectMapper.toDTO(project);
 
         Assertions.assertNotNull(projectDto);
+        Assertions.assertEquals(project.getId(),projectDto.getId());
         Assertions.assertEquals(project.getName(),projectDto.getName());
         Assertions.assertEquals(project.getStartDate(),projectDto.getStartDate());
         Assertions.assertEquals(project.getEndDate(),projectDto.getEndDate());
@@ -53,6 +53,7 @@ public class ProjectMapperTest {
      ProjectDto projectDto=createValidProjectDto();
      Project project=projectMapper.toEntityBasics(projectDto);
         Assertions.assertNotNull(project);
+        Assertions.assertEquals(projectDto.getId(),project.getId());
         Assertions.assertEquals(projectDto.getName(),project.getName());
         Assertions.assertEquals(projectDto.getStartDate(),project.getStartDate());
         Assertions.assertEquals(projectDto.getEndDate(),project.getEndDate());
@@ -89,6 +90,7 @@ public class ProjectMapperTest {
     }
     public Project createValidProject(User owner){
         return Project.builder().
+                id(1L).
                 name("project").
                 startDate(LocalDate.of(2020,12,12)).
                 endDate(LocalDate.of(2099,12,12)).

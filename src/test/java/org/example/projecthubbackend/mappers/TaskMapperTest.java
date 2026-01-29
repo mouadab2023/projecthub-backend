@@ -1,5 +1,7 @@
 package org.example.projecthubbackend.mappers;
 
+import jakarta.transaction.Transactional;
+import org.example.projecthubbackend.dtos.CommentDto;
 import org.example.projecthubbackend.dtos.ProjectDto;
 import org.example.projecthubbackend.dtos.TaskDto;
 import org.example.projecthubbackend.entities.Project;
@@ -10,10 +12,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class TaskMapperTest {
     @Autowired
     private TaskMapper taskMapper;
@@ -24,6 +28,7 @@ public class TaskMapperTest {
         TaskDto taskDto = taskMapper.toDTO(task);
 
         Assertions.assertNotNull(taskDto);
+        Assertions.assertEquals(task.getId(),taskDto.getId());
         Assertions.assertEquals(task.getTitle(),taskDto.getTitle());
         Assertions.assertEquals(task.getDescription(),taskDto.getDescription());
         Assertions.assertEquals(task.getDueDate(),taskDto.getDueDate());
@@ -37,12 +42,14 @@ public class TaskMapperTest {
         TaskDto taskDto = createValidTaskDto();
         Task task = taskMapper.toEntityBasics(taskDto);
         Assertions.assertNotNull(task);
+        Assertions.assertEquals(taskDto.getId(),task.getId());
         Assertions.assertEquals(taskDto.getTitle(),task.getTitle());
         Assertions.assertEquals(taskDto.getDescription(),task.getDescription());
         Assertions.assertEquals(taskDto.getDueDate(),task.getDueDate());
         Assertions.assertEquals(taskDto.getPriority(),task.getPriority());
         Assertions.assertEquals(taskDto.getStatus(),task.getStatus());
     }
+
     public TaskDto createValidTaskDto(){
        return TaskDto.builder()
                .id(1L)
@@ -73,6 +80,7 @@ public class TaskMapperTest {
         User user =  createValidUser();
         Project project = createValidProject(user);
         return Task.builder().
+                id(1L).
                 title("title").
                 description("description").
                 dueDate(LocalDate.now()).

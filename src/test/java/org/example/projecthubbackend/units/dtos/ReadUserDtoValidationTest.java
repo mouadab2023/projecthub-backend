@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ReadUserDtoValidationTest {
@@ -58,7 +60,12 @@ public class ReadUserDtoValidationTest {
         readUserDto.setEmail("mail.com");
         assertViolation(readUserDto,"email");
     }
-
+    @Test
+    public void testRolesNull(){
+        ReadUserDto readUserDto =validUserDto();
+        readUserDto.setRoles(null);
+        assertViolation(readUserDto,"roles");
+    }
     @Test
     public void testValidUserDto(){
         ReadUserDto readUserDto =validUserDto();
@@ -66,11 +73,13 @@ public class ReadUserDtoValidationTest {
         Assertions.assertEquals(0,violations.size());
     }
     public ReadUserDto validUserDto(){
+        Set<String> roles = new HashSet<>(List.of("ROLE_USER"));
         return ReadUserDto.builder().
                 id(1L).
                 firstName("alex").
                 lastName("dupont").
                 email("alexdupont@dot.net").
+                roles(roles).
                 build();
     }
     public void assertViolation(ReadUserDto readUserDto, String propertyName){
