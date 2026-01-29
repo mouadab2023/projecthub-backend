@@ -5,6 +5,7 @@ import lombok.Data;
 import org.example.projecthubbackend.entities.User;
 import org.example.projecthubbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +22,12 @@ import java.util.Set;
 public class DataLoader implements ApplicationRunner {
     private UserRepository userRepository;
 
+    @Value("${EMAIL}")
+    private  String email;
+
+    @Value("${PASSWORD}")
+    private  String password;
+
     @Autowired
     DataLoader(UserRepository userService) {
         this.userRepository = userService;
@@ -31,12 +38,11 @@ public class DataLoader implements ApplicationRunner {
 
         Set<String> roles = new HashSet<>();
         roles.add("ROLE_ADMIN");
-
         User user = User.builder().
                 firstName("alexis").
                 lastName("dupont").
-                email("test@test.com").
-                password(new BCryptPasswordEncoder().encode("Ppassword1$")).
+                email(email).
+                password(new BCryptPasswordEncoder().encode(password)).
                 roles(roles).build();
         if (!userRepository.existsUserByEmail(user.getEmail())) {
             userRepository.save(user);
