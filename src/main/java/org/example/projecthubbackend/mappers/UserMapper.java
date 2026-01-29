@@ -1,6 +1,7 @@
 package org.example.projecthubbackend.mappers;
 
 import org.example.projecthubbackend.dtos.user.ReadUserDto;
+import org.example.projecthubbackend.dtos.user.ReadUserMinDto;
 import org.example.projecthubbackend.entities.Project;
 import org.example.projecthubbackend.entities.Task;
 import org.example.projecthubbackend.entities.User;
@@ -26,8 +27,20 @@ public class UserMapper {
                 user.getLastName(),
                 user.getEmail(),
                 user.getAvatarUrl(),
+                user.getRoles(),
                 projectIds,
                 assignedTaskIds
         );
+    }
+
+    public ReadUserMinDto toReadUserMinDto(User user) {
+        return new ReadUserMinDto(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getAvatarUrl(),
+                user.getRoles()
+                );
     }
 }

@@ -7,14 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class ReadUserDto {
-
+public class ReadUserMinDto {
     @NotNull
     Long id;
 
@@ -32,8 +30,4 @@ public class ReadUserDto {
 
     @NotNull
     private Set<String> roles;
-
-    private List<Long> projects;
-
-    private List<Long> assignedTasks;
 }
