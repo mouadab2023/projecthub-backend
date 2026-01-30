@@ -31,38 +31,22 @@ public class ProjectDtoValidationTest {
         assertViolation(projectDto,"name");
     }
     @Test
-    public void testStartDateNull(){
+    public void testCreationDateNull(){
         ProjectDto projectDto = validProjectDTO();
-        projectDto.setStartDate(null);
-        assertViolation(projectDto,"startDate");
+        projectDto.setCreationDate(null);
+        assertViolation(projectDto,"creationDate");
     }
-    @Test
-    public void testEndDateNull(){
-        ProjectDto projectDto = validProjectDTO();
-        projectDto.setEndDate(null);
-        assertViolation(projectDto,"endDate");
-    }
+
     @Test
     public void testOwnerNull(){
         ProjectDto projectDto = validProjectDTO();
         projectDto.setOwner(null);
         assertViolation(projectDto,"owner");
     }
-    @Test
-    public void testStartDateBeforeEndDate(){
-        ProjectDto projectDto =ProjectDto.builder().
-                name("name").
-                startDate(LocalDate.of(2020,12,12)).
-                endDate(LocalDate.of(2009,12,12)).
-                owner(1L).
-                build();
-        Assertions.assertFalse(validator.validate(projectDto).isEmpty());
-    }
     public ProjectDto validProjectDTO(){
         return ProjectDto.builder().
                 name("name").
-                startDate(LocalDate.of(2020,01,01)).
-                endDate(LocalDate.of(2099,01,01)).
+                creationDate(LocalDate.of(2020,01,01)).
                 owner(1L).
                 build();
     }

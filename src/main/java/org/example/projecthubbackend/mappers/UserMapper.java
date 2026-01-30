@@ -13,13 +13,7 @@ import java.util.List;
 public class UserMapper {
 
     public ReadUserDto toDTO(User user) {
-        List<Long> projectIds = (user.getProjects() == null)
-                ? List.of()
-                : user.getProjects().stream().map(Project::getId).toList();
 
-        List<Long> assignedTaskIds = (user.getAssignedTasks() == null)
-                ? List.of()
-                : user.getAssignedTasks().stream().map(Task::getId).toList();
 
         return new ReadUserDto(
                 user.getId(),

@@ -25,8 +25,7 @@ public class ProjectValidationTest
         User owner = createValidUser();
         Project project =Project.builder().
                 name(null).
-                startDate(LocalDate.of(2020,12,12)).
-                endDate(LocalDate.of(2099,12,12)).
+                creationDate(LocalDate.of(2020,12,12)).
                 owner(owner).
                 build();
         Set<ConstraintViolation<Project>> violations = validator.validate(project);
@@ -37,58 +36,32 @@ public class ProjectValidationTest
         User owner = createValidUser();
         Project project =Project.builder().
                 name("").
-                startDate(LocalDate.of(2020,12,12)).
-                endDate(LocalDate.of(2099,12,12)).
+                creationDate(LocalDate.of(2020,12,12)).
                 owner(owner).
                 build();
         Set<ConstraintViolation<Project>> violations = validator.validate(project);
         Assertions.assertTrue(violations.stream().anyMatch(violation -> violation.getPropertyPath().toString().equals("name")));
     }
     @Test
-    public void testStartDateNull(){
+    public void testCreationDateNull(){
         User owner = createValidUser();
         Project project =Project.builder().
                 name("name").
-                startDate(null).
-                endDate(LocalDate.of(2099,12,12)).
+                creationDate(null).
                 owner(owner).
                 build();
         Set<ConstraintViolation<Project>> violations = validator.validate(project);
-        Assertions.assertTrue(violations.stream().anyMatch(violation -> violation.getPropertyPath().toString().equals("startDate")));
-    }
-    @Test
-    public void testEndDateNull(){
-        User owner = createValidUser();
-        Project project =Project.builder().
-                name("name").
-                startDate(LocalDate.of(2020,12,12)).
-                endDate(null).
-                owner(owner).
-                build();
-        Set<ConstraintViolation<Project>> violations = validator.validate(project);
-        Assertions.assertTrue(violations.stream().anyMatch(violation -> violation.getPropertyPath().toString().equals("endDate")));
+        Assertions.assertTrue(violations.stream().anyMatch(violation -> violation.getPropertyPath().toString().equals("creationDate")));
     }
     @Test
     public void testOwnerNull(){
         Project project =Project.builder().
                 name("name").
-                startDate(LocalDate.of(2020,12,12)).
-                endDate(LocalDate.of(2099,12,12)).
+                creationDate(LocalDate.of(2020,12,12)).
                 owner(null).
                 build();
         Set<ConstraintViolation<Project>> violations = validator.validate(project);
         Assertions.assertTrue(violations.stream().anyMatch(violation -> violation.getPropertyPath().toString().equals("owner")));
-    }
-    @Test
-    public void testStartDateBeforeEndDate(){
-        User owner = createValidUser();
-        Project project =Project.builder().
-                name("name").
-                startDate(LocalDate.of(2020,12,12)).
-                endDate(LocalDate.of(2009,12,12)).
-                owner(owner).
-                build();
-        Assertions.assertFalse(validator.validate(project).isEmpty());
     }
     @Test
     public void testAddTask(){

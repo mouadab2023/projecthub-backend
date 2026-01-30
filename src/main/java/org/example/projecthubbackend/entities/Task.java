@@ -4,12 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.example.projecthubbackend.enumerations.Priority;
-import org.example.projecthubbackend.enumerations.Status;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,7 +13,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -39,19 +36,15 @@ public class Task {
     @NotNull
     private Priority priority;
 
-    @Builder.Default
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.TODO;
-
     @Valid
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
+    @NotNull
     @Valid
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User assignee;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Column column;
 
     @CreationTimestamp
     private LocalDateTime createTime;

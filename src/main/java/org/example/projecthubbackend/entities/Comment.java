@@ -4,15 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -29,12 +27,12 @@ public class Comment {
 
     @Valid
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ProjectMember author;
 
     @Valid
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Task task;
 
 }

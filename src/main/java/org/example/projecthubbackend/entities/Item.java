@@ -1,11 +1,8 @@
 package org.example.projecthubbackend.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
-import java.util.Date;
 
 @Entity
 @Getter
@@ -13,22 +10,19 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RefreshToken {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
-    private String token;
-
-    @ManyToOne
     @NotNull
-    private User user;
+    private String name;
 
-    @NotNull
-    private Date expiryDate;
+    private boolean isChecked;
 
-    @NotNull
-    private boolean valid;
+    private int position;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Task task;
 
 }

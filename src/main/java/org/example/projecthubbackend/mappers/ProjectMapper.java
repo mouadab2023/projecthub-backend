@@ -1,6 +1,5 @@
 package org.example.projecthubbackend.mappers;
 
-import lombok.RequiredArgsConstructor;
 import org.example.projecthubbackend.dtos.ProjectDto;
 import org.example.projecthubbackend.entities.Project;
 import org.example.projecthubbackend.entities.Task;
@@ -16,8 +15,7 @@ public class ProjectMapper {
         return ProjectDto.builder().
                 id(project.getId()).
                 name(project.getName()).
-                startDate(project.getStartDate()).
-                endDate(project.getEndDate()).
+                creationDate(project.getCreationDate()).
                 owner(project.getOwner() != null ? project.getOwner().getId() : null).
                 tasks(project.getTasks() != null ? project.getTasks().stream().map(Task::getId).collect(Collectors.toList()) : List.of())
                 .build();
@@ -27,8 +25,7 @@ public class ProjectMapper {
         return Project.builder().
                 id(projectDto.getId()).
                 name(projectDto.getName()).
-                startDate(projectDto.getStartDate()).
-                endDate(projectDto.getEndDate()).
+                creationDate(projectDto.getCreationDate()).
                 build();
     }
 }

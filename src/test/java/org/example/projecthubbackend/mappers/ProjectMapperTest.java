@@ -38,8 +38,7 @@ public class ProjectMapperTest {
         Assertions.assertNotNull(projectDto);
         Assertions.assertEquals(project.getId(),projectDto.getId());
         Assertions.assertEquals(project.getName(),projectDto.getName());
-        Assertions.assertEquals(project.getStartDate(),projectDto.getStartDate());
-        Assertions.assertEquals(project.getEndDate(),projectDto.getEndDate());
+        Assertions.assertEquals(project.getCreationDate(),projectDto.getCreationDate());
         Assertions.assertEquals(project.getOwner().getId(),projectDto.getOwner());
         List<Long> dtoTaskIds = projectDto.getTasks();
         List<Long> entityTaskIds = project.getTasks().stream()
@@ -55,16 +54,14 @@ public class ProjectMapperTest {
         Assertions.assertNotNull(project);
         Assertions.assertEquals(projectDto.getId(),project.getId());
         Assertions.assertEquals(projectDto.getName(),project.getName());
-        Assertions.assertEquals(projectDto.getStartDate(),project.getStartDate());
-        Assertions.assertEquals(projectDto.getEndDate(),project.getEndDate());
+        Assertions.assertEquals(projectDto.getCreationDate(),project.getCreationDate());
 
     }
     public ProjectDto createValidProjectDto(){
      return ProjectDto.builder().
                 id(1L).
                 name("name").
-                startDate(LocalDate.of(2020,01,01)).
-                endDate(LocalDate.of(2099,01,01)).
+                creationDate(LocalDate.of(2020,01,01)).
                 owner(1L).
                 build();
     }
@@ -92,8 +89,7 @@ public class ProjectMapperTest {
         return Project.builder().
                 id(1L).
                 name("project").
-                startDate(LocalDate.of(2020,12,12)).
-                endDate(LocalDate.of(2099,12,12)).
+                creationDate(LocalDate.of(2020,12,12)).
                 owner(owner).
                 build();
     }

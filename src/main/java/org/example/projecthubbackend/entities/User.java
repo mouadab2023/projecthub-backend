@@ -1,7 +1,6 @@
 package org.example.projecthubbackend.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,11 +11,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -46,48 +48,14 @@ public class User implements UserDetails {
     private String avatarUrl;
 
     @Builder.Default
-    @Valid
-    @OneToMany(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private List<Project> projects = new ArrayList<>();
-
-    @Builder.Default
     @NotNull
     private Set<String> roles = new HashSet<>(List.of("ROLE_USER"));
-
-    @Builder.Default
-    @Valid
-    @OneToMany(mappedBy = "assignee", fetch = FetchType.EAGER)
-    private List<Task> assignedTasks = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createTime;
 
     @UpdateTimestamp
     private LocalDateTime updateTime;
-
-    public void addProject(Project project) {
-        if (!projects.contains(project)) {
-            projects.add(project);
-            project.setOwner(this);
-        }
-    }
-
-    public void removeProject(Project project) {
-        projects.remove(project);
-        project.setOwner(null);
-    }
-
-    public void addAssignedTask(Task task) {
-        if (!assignedTasks.contains(task)) {
-            assignedTasks.add(task);
-            task.setAssignee(this);
-        }
-    }
-
-    public void removeAssignedTask(Task task) {
-        assignedTasks.remove(task);
-        task.setAssignee(null);
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

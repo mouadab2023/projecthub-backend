@@ -157,8 +157,7 @@ public class TaskValidationTest {
     public Project createValidProject(User owner){
         return Project.builder().
                 name("project").
-                startDate(LocalDate.of(2020,12,12)).
-                endDate(LocalDate.of(2099,12,12)).
+                creationDate(LocalDate.of(2020,12,12)).
                 owner(owner).
                 build();
     }

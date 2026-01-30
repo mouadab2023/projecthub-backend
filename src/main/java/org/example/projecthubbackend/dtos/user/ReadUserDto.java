@@ -33,7 +33,4 @@ public class ReadUserDto {
     @NotNull
     private Set<String> roles;
 
-    private List<Long> projects;
-
-    private List<Long> assignedTasks;
 }

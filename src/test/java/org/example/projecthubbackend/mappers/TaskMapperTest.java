@@ -71,8 +71,7 @@ public class TaskMapperTest {
         return Project.builder().
                 id(1L).
                 name("project").
-                startDate(LocalDate.of(2020,12,12)).
-                endDate(LocalDate.of(2099,12,12)).
+                creationDate(LocalDate.of(2020,12,12)).
                 owner(owner).
                 build();
     }
