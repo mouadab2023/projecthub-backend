@@ -4,7 +4,7 @@ package org.example.projecthubbackend.units.dtos;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import org.example.projecthubbackend.dtos.ProjectDto;
+import org.example.projecthubbackend.dtos.project.ProjectDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

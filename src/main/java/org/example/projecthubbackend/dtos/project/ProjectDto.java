@@ -1,4 +1,4 @@
-package org.example.projecthubbackend.dtos;
+package org.example.projecthubbackend.dtos.project;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.projecthubbackend.dtos.ColumnDto;
+import org.example.projecthubbackend.dtos.ProjectMemberDto;
 import org.hibernate.sql.Update;
 
 import java.time.LocalDate;
@@ -22,11 +24,6 @@ public class ProjectDto {
     @NotBlank
     private String name;
 
-    @NotNull
     private LocalDate creationDate;
-
-    @NotNull
-    private Long owner;
-
 }
 

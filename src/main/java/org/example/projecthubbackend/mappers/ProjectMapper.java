@@ -1,6 +1,6 @@
 package org.example.projecthubbackend.mappers;
 
-import org.example.projecthubbackend.dtos.ProjectDto;
+import org.example.projecthubbackend.dtos.project.ProjectDto;
 import org.example.projecthubbackend.entities.Project;
 import org.example.projecthubbackend.entities.Task;
 import org.springframework.stereotype.Component;
@@ -16,9 +16,7 @@ public class ProjectMapper {
                 id(project.getId()).
                 name(project.getName()).
                 creationDate(project.getCreationDate()).
-                owner(project.getOwner() != null ? project.getOwner().getId() : null).
-                tasks(project.getTasks() != null ? project.getTasks().stream().map(Task::getId).collect(Collectors.toList()) : List.of())
-                .build();
+                build();
     }
 
     public Project toEntityBasics(ProjectDto projectDto){

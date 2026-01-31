@@ -16,7 +16,7 @@ public class ColumnDto {
     @NotBlank
     private String name;
 
-    @NotBlank
+    @NotNull
     private int position;
 
     @NotNull

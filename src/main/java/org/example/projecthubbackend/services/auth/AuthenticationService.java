@@ -1,4 +1,4 @@
-package org.example.projecthubbackend.services;
+package org.example.projecthubbackend.services.auth;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,8 +10,11 @@ import org.example.projecthubbackend.dtos.user.ReadUserDto;
 import org.example.projecthubbackend.entities.RefreshToken;
 import org.example.projecthubbackend.entities.User;
 import org.example.projecthubbackend.exceptions.UnauthorizedException;
+import org.example.projecthubbackend.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -37,6 +40,11 @@ public class AuthenticationService {
         this.jwtService = jwtService;
     }
 
+    public User getCurrentUserFromSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+       return (User) authentication.getPrincipal();
+    }
     public ReadUserDto signup(InsertUserDto input) {
         return userService.createUser(input);
     }

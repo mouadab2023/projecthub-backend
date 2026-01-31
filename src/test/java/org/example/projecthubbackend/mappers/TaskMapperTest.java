@@ -1,8 +1,5 @@
 package org.example.projecthubbackend.mappers;
 
-import jakarta.transaction.Transactional;
-import org.example.projecthubbackend.dtos.CommentDto;
-import org.example.projecthubbackend.dtos.ProjectDto;
 import org.example.projecthubbackend.dtos.TaskDto;
 import org.example.projecthubbackend.entities.Project;
 import org.example.projecthubbackend.entities.Task;

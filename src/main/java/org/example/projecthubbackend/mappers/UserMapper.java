@@ -21,9 +21,7 @@ public class UserMapper {
                 user.getLastName(),
                 user.getEmail(),
                 user.getAvatarUrl(),
-                user.getRoles(),
-                projectIds,
-                assignedTaskIds
+                user.getRoles()
         );
     }
 

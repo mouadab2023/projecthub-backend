@@ -1,4 +1,4 @@
-package org.example.projecthubbackend.services;
+package org.example.projecthubbackend.services.auth;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Getter;

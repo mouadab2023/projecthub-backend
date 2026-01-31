@@ -1,0 +1,8 @@
+package org.example.projecthubbackend.services;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class ColumnService {
+
+}

@@ -13,9 +13,7 @@ public class TaskMapper {
                 .description(task.getDescription())
                 .dueDate(task.getDueDate())
                 .priority(task.getPriority())
-                .status(task.getStatus())
                 .project(task.getProject() != null ? task.getProject().getId() : null)
-                .assignee(task.getAssignee() != null ? task.getAssignee().getId() : null)
                 .build();
     }
 
@@ -26,7 +24,6 @@ public class TaskMapper {
                 description(taskDTO.getDescription()).
                 dueDate(taskDTO.getDueDate()).
                 priority(taskDTO.getPriority()).
-                status(taskDTO.getStatus()).
                 build();
     }
 }

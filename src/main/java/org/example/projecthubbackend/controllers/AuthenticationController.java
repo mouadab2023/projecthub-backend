@@ -6,7 +6,7 @@ import org.example.projecthubbackend.dtos.user.InsertUserDto;
 import org.example.projecthubbackend.dtos.user.LoginUserDto;
 import org.example.projecthubbackend.dtos.user.ReadUserDto;
 import org.example.projecthubbackend.exceptions.UnauthorizedException;
-import org.example.projecthubbackend.services.AuthenticationService;
+import org.example.projecthubbackend.services.auth.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
