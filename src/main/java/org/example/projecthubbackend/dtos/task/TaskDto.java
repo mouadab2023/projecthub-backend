@@ -1,12 +1,11 @@
-package org.example.projecthubbackend.dtos;
+package org.example.projecthubbackend.dtos.task;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import org.example.projecthubbackend.dtos.groups.Update;
 import org.example.projecthubbackend.enumerations.Priority;
-import org.example.projecthubbackend.enumerations.Status;
-import org.hibernate.sql.Update;
 
 import java.time.LocalDate;
 
@@ -28,11 +27,10 @@ public class TaskDto {
     @NotNull
     private Priority priority;
 
-    @Builder.Default
-    private Status status = Status.TODO;
-
     @NotNull
     private Long project;
 
-    private Long assignee;
+    @NotNull
+    private Long column;
+
 }

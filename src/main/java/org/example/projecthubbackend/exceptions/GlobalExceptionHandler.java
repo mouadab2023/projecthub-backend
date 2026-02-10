@@ -46,7 +46,18 @@ public class GlobalExceptionHandler {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
             errorDetail.setProperty("description", "The JWT token has expired");
         }
-
+        if (exception instanceof InvalidOrExpiredRefreshTokenException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
+            errorDetail.setProperty("description", "The refresh token is invalid or expired");
+        }
+        if (exception instanceof MissingRefreshTokenException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
+            errorDetail.setProperty("description", "The refresh token is missing");
+        }
+        if (exception instanceof UserAlreadyExistAuthenticationException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(409), exception.getMessage());
+            errorDetail.setProperty("description", "The username is already in use");
+        }
         if (errorDetail == null) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());
             errorDetail.setProperty("description", "Unknown internal server error.");

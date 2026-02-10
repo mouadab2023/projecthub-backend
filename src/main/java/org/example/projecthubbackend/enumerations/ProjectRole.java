@@ -2,6 +2,7 @@ package org.example.projecthubbackend.enumerations;
 
 public enum ProjectRole {
     OWNER,
-    MEMBER,
+    MANAGER,
+    COLLABORATOR,
     VIEWER
 }

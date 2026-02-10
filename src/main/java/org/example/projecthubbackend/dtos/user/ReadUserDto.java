@@ -32,5 +32,4 @@ public class ReadUserDto {
 
     @NotNull
     private Set<String> roles;
-
 }

@@ -1,6 +1,6 @@
 package org.example.projecthubbackend.mappers;
 
-import org.example.projecthubbackend.dtos.TaskDto;
+import org.example.projecthubbackend.dtos.task.TaskDto;
 import org.example.projecthubbackend.entities.Project;
 import org.example.projecthubbackend.entities.Task;
 import org.example.projecthubbackend.entities.User;

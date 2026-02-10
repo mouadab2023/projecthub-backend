@@ -18,10 +18,10 @@ import org.example.projecthubbackend.mappers.ProjectMapper;
 import org.example.projecthubbackend.mappers.ProjectMemberMapper;
 import org.example.projecthubbackend.repositories.*;
 import org.example.projecthubbackend.services.auth.AuthenticationService;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,57 +33,49 @@ public class ProjectService {
     final ProjectRepository projectRepository;
     final ColumnRepository columnRepository;
     final ProjectMemberRepository projectMemberRepository;
+    final AuthenticationService authenticationService;
+    final ProjectMapper projectMapper;
+    final ProjectMemberMapper projectMemberMapper;
+    final ColumnMapper columnMapper;
     private final TaskRepository taskRepository;
     private final CommentRepository commentRepository;
     private final ItemRepository itemRepository;
 
-    final AuthenticationService authenticationService;
 
-    final ProjectMapper projectMapper;
-    final ProjectMemberMapper projectMemberMapper;
-    final ColumnMapper columnMapper;
-
-    @PreAuthorize("hasRole('ADMIN') or @projectSecurity.isMember(#id)")
-    public ProjectDetailsDto findProjectDetailsById(@NotNull @Min(1) Long id) {
-        Project project =projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        List<ProjectMember> members =projectMemberRepository.findAllByProject_Id(id);
-        List<Column> columns = columnRepository.findAllByProject_Id(id);
-        return ProjectDetailsDto.builder()
-                .id(project.getId())
-                .name(project.getName())
-                .columns(columns.stream().map(columnMapper::toDTO).collect(Collectors.toList()))
-                .members(members.stream().map(projectMemberMapper::toDTO).collect(Collectors.toList()))
-                .creationDate(project.getCreationDate())
-                .build();
-    }
-    @PreAuthorize("hasRole('ADMIN')")
-    public @Nullable List<ProjectDto> getAllProjects() {
-        List<Project> projects = projectRepository.findAll();
+    public List<ProjectDto> getAllProjects() {
+        User currentUser = authenticationService.getCurrentUserFromSecurityContext();
+        List<Project> projects = projectRepository.findAllByUserId(currentUser.getId());
         return projects.stream().map(projectMapper::toDTO).collect(Collectors.toList());
     }
-    public  ProjectDto createProject(@Valid ProjectDto projectDto) {
-        Project newProject= Project.builder()
-                .name(projectDto.getName())
-                .build();
-        Project savedProject=projectRepository.save(newProject);
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @projectSecurity.canViewProject(#id)")
+    public ProjectDetailsDto findProjectDetailsById(@NotNull @Min(1) Long id) {
+        Project project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        List<ProjectMember> members = projectMemberRepository.findAllByProject_Id(id);
+        List<Column> columns = columnRepository.findAllByProject_Id(id);
+        return ProjectDetailsDto.builder().id(project.getId()).name(project.getName()).columns(columns.stream().map(columnMapper::toDTO).collect(Collectors.toList())).members(members.stream().map(projectMemberMapper::toDTO).collect(Collectors.toList())).creationDate(project.getCreationDate()).build();
+    }
+
+    public ProjectDto createProject(@Valid ProjectDto projectDto) {
+        Project newProject = Project.builder().name(projectDto.getName()).creationDate(LocalDate.now()).build();
+
+        Project savedProject = projectRepository.save(newProject);
 
         User currentUser = authenticationService.getCurrentUserFromSecurityContext();
-        ProjectMember projectMember=ProjectMember.builder().
-                project(savedProject).
-                user(currentUser).
-                role(ProjectRole.OWNER).build();
+        ProjectMember projectMember = ProjectMember.builder().project(savedProject).user(currentUser).role(ProjectRole.OWNER).build();
         projectMemberRepository.save(projectMember);
 
-        return projectMapper.toDTO(savedProject) ;
+        return projectMapper.toDTO(savedProject);
     }
-    @PreAuthorize("hasRole('ADMIN') or @projectSecurity.isOwner(#id)")
-    public  ProjectDto updateProject(@NotNull @Min(1) Long id, @Valid ProjectDto projectDto) {
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @projectSecurity.canEditProject(#id)")
+    public ProjectDto updateProject(@NotNull @Min(1) Long id, @Valid ProjectDto projectDto) {
         Project project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        if (!projectDto.getName().equals(project.getName()))
-            project.setName(projectDto.getName());
+        if (!projectDto.getName().equals(project.getName())) project.setName(projectDto.getName());
         return projectMapper.toDTO(projectRepository.save(project));
     }
-    @PreAuthorize(" hasRole('ADMIN') or @projectSecurity.isOwner(#id)")
+
+    @PreAuthorize(" hasRole('ROLE_ADMIN') or @projectSecurity.canDeleteProject(#id)")
     public void removeProject(@NotNull @Min(1) Long id) {
         projectMemberRepository.deleteByProject_Id(id);
         commentRepository.deleteAllByTask_Project_Id(id);

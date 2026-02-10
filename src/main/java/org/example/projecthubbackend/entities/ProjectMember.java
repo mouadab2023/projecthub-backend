@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.example.projecthubbackend.enumerations.ProjectRole;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -28,5 +32,11 @@ public class ProjectMember {
     @NotNull
     @Enumerated(EnumType.STRING)
     private ProjectRole role;
+
+    @CreationTimestamp
+    private LocalDateTime createTime;
+
+    @UpdateTimestamp
+    private LocalDateTime updateTime;
 }
 

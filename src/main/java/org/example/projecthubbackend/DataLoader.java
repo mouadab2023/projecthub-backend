@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -34,14 +35,15 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        Set<String> roles = new HashSet<>();
-        roles.add("ROLE_ADMIN");
+        Set<String> roles = new HashSet<>(List.of("ROLE_ADMIN"));
         User user = User.builder().
-                firstName("alexis").
-                lastName("dupont").
+                firstName("elliot").
+                lastName("alderson").
+                avatarUrl("https://fastly.picsum.photos/id/111/150/150.jpg?hmac=yQj-crR0pweFz5UdocCK-NrAujeuW_h8swuw09agQU0").
+                roles(roles).
                 email(email).
-                password(new BCryptPasswordEncoder().encode(password)).
-                roles(roles).build();
+                password(new BCryptPasswordEncoder().encode(password)).build();
+
         if (!userRepository.existsUserByEmail(user.getEmail())) {
             userRepository.save(user);
         }

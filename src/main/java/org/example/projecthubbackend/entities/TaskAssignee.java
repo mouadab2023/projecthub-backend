@@ -3,6 +3,8 @@ package org.example.projecthubbackend.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -26,4 +28,10 @@ public class TaskAssignee {
     private User user;
 
     private LocalDateTime assignedAt;
+
+    @CreationTimestamp
+    private LocalDateTime createTime;
+
+    @UpdateTimestamp
+    private LocalDateTime updateTime;
 }

@@ -28,7 +28,11 @@ public class Project {
     @NotBlank
     private String name;
 
-    @CreationTimestamp
     private LocalDate creationDate;
 
+    @CreationTimestamp
+    private LocalDateTime createTime;
+
+    @UpdateTimestamp
+    private LocalDateTime updateTime;
 }

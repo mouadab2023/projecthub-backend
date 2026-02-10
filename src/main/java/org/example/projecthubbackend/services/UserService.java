@@ -5,7 +5,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.projecthubbackend.dtos.user.InsertUserDto;
 import org.example.projecthubbackend.dtos.user.ReadUserDto;
-import org.example.projecthubbackend.dtos.user.ReadUserMinDto;
 import org.example.projecthubbackend.dtos.user.UpdateUserDto;
 import org.example.projecthubbackend.entities.User;
 import org.example.projecthubbackend.exceptions.UserAlreadyExistAuthenticationException;
@@ -37,18 +36,15 @@ public class UserService implements UserDetailsService {
         return userMapper.toDTO(user);
     }
 
-    public ReadUserMinDto toReadUserMinDto(User user) {
-        return userMapper.toReadUserMinDto(user);
-    }
 
     public ReadUserDto createUser(InsertUserDto userDto) {
         if (userRepository.existsUserByEmail(userDto.getEmail())) {
-            throw new UserAlreadyExistAuthenticationException("User with email " + userDto.getEmail() + " already exists");
+            throw new UserAlreadyExistAuthenticationException("Username already used");
         }
         User newUser = User.builder()
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
-                .email(userDto.getEmail())
+                .email(userDto.getEmail().toLowerCase().trim())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .avatarUrl(userDto.getAvatarUrl())
                 .build();
@@ -76,7 +72,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findByEmail(username.toLowerCase().trim()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
     public List<ReadUserDto> getAllUsers() {
         List<User> users = userRepository.findAll();

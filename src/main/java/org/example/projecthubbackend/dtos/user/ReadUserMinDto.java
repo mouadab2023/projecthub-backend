@@ -13,6 +13,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 public class ReadUserMinDto {
+
     @NotNull
     Long id;
 

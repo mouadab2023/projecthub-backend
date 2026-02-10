@@ -45,4 +45,5 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable @NotNull @Min(1) Long id){
         projectService.removeProject(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-    }}
+    }
+}

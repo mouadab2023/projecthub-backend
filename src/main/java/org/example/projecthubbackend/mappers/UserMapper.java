@@ -13,8 +13,6 @@ import java.util.List;
 public class UserMapper {
 
     public ReadUserDto toDTO(User user) {
-
-
         return new ReadUserDto(
                 user.getId(),
                 user.getFirstName(),

@@ -9,7 +9,7 @@ import org.example.projecthubbackend.dtos.user.LoginUserDto;
 import org.example.projecthubbackend.dtos.user.ReadUserDto;
 import org.example.projecthubbackend.entities.RefreshToken;
 import org.example.projecthubbackend.entities.User;
-import org.example.projecthubbackend.exceptions.UnauthorizedException;
+import org.example.projecthubbackend.exceptions.InvalidOrExpiredRefreshTokenException;
 import org.example.projecthubbackend.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,6 +42,7 @@ public class AuthenticationService {
 
     public User getCurrentUserFromSecurityContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getPrincipal().toString());
 
        return (User) authentication.getPrincipal();
     }
@@ -63,9 +64,9 @@ public class AuthenticationService {
 
     @Transactional
     public LoginResponse refresh(String refreshToken, HttpServletResponse response) {
-        RefreshToken fetchedRefreshToken = refreshTokenService.findByToken(refreshToken).orElseThrow(UnauthorizedException::new);
+        RefreshToken fetchedRefreshToken = refreshTokenService.findByToken(refreshToken).orElseThrow(InvalidOrExpiredRefreshTokenException::new);
         if (!fetchedRefreshToken.isValid() || refreshTokenService.isRefreshTokenExpired(fetchedRefreshToken)) {
-            throw new UnauthorizedException();
+            throw new InvalidOrExpiredRefreshTokenException();
         }
         fetchedRefreshToken.setValid(false);
         refreshTokenService.updateRefreshToken(fetchedRefreshToken);
@@ -80,9 +81,13 @@ public class AuthenticationService {
 
         String newJwtToken = jwtService.generateToken(fetchedRefreshToken.getUser());
 
+
         return LoginResponse.builder()
                 .token(newJwtToken)
-                .expiresIn(jwtService.getExpirationTime()).build();
+                .expiresIn(jwtService.getExpirationTime())
+                .user(userService.toReadUserDto(newRefreshtoken.getUser()))
+                .build();
+
     }
 
     public LoginResponse login(LoginUserDto loginUserDto, HttpServletResponse response) {
@@ -102,11 +107,11 @@ public class AuthenticationService {
         return LoginResponse.builder()
                 .token(jwtToken)
                 .expiresIn(jwtService.getExpirationTime())
-                .user(userService.toReadUserMinDto(authenticatedUser)).build();
+                .user(userService.toReadUserDto(authenticatedUser)).build();
     }
     @Transactional
     public void logout(String refreshToken,HttpServletResponse response) {
-        RefreshToken fetchedRefreshToken = refreshTokenService.findByToken(refreshToken).orElseThrow(UnauthorizedException::new);
+        RefreshToken fetchedRefreshToken = refreshTokenService.findByToken(refreshToken).orElseThrow(InvalidOrExpiredRefreshTokenException::new);
         fetchedRefreshToken.setValid(false);
         refreshTokenService.updateRefreshToken(fetchedRefreshToken);
 

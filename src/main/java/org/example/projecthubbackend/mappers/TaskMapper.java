@@ -1,6 +1,6 @@
 package org.example.projecthubbackend.mappers;
 
-import org.example.projecthubbackend.dtos.TaskDto;
+import org.example.projecthubbackend.dtos.task.TaskDto;
 import org.example.projecthubbackend.entities.Task;
 import org.springframework.stereotype.Component;
 
@@ -13,17 +13,9 @@ public class TaskMapper {
                 .description(task.getDescription())
                 .dueDate(task.getDueDate())
                 .priority(task.getPriority())
-                .project(task.getProject() != null ? task.getProject().getId() : null)
+                .project(task.getProject().getId())
+                .column(task.getColumn().getId())
                 .build();
     }
 
-    public Task toEntityBasics(TaskDto taskDTO) {
-        return Task.builder()
-                .id(taskDTO.getId())
-                .title(taskDTO.getTitle()).
-                description(taskDTO.getDescription()).
-                dueDate(taskDTO.getDueDate()).
-                priority(taskDTO.getPriority()).
-                build();
-    }
 }

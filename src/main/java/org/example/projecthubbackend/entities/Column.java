@@ -5,8 +5,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "project_column")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,4 +31,10 @@ public class Column {
     @Valid
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
+
+    @CreationTimestamp
+    private LocalDateTime createTime;
+
+    @UpdateTimestamp
+    private LocalDateTime updateTime;
 }
