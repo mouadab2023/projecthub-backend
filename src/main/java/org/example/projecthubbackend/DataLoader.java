@@ -22,10 +22,10 @@ public class DataLoader implements ApplicationRunner {
     private UserRepository userRepository;
 
     @Value("${EMAIL}")
-    private  String email;
+    private String email;
 
     @Value("${PASSWORD}")
-    private  String password;
+    private String password;
 
     @Autowired
     DataLoader(UserRepository userService) {

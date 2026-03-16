@@ -36,7 +36,6 @@ public class UserService implements UserDetailsService {
         return userMapper.toDTO(user);
     }
 
-
     public ReadUserDto createUser(InsertUserDto userDto) {
         if (userRepository.existsUserByEmail(userDto.getEmail())) {
             throw new UserAlreadyExistAuthenticationException("Username already used");
@@ -74,6 +73,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username.toLowerCase().trim()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
     public List<ReadUserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map(userMapper::toDTO).toList();

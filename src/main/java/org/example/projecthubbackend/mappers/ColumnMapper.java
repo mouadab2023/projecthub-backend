@@ -1,6 +1,7 @@
 package org.example.projecthubbackend.mappers;
 
-import org.example.projecthubbackend.dtos.ColumnDto;
+import org.example.projecthubbackend.dtos.column.ColumnDetailsDto;
+import org.example.projecthubbackend.dtos.column.ColumnDto;
 import org.example.projecthubbackend.entities.Column;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ public class ColumnMapper {
                 .id(column.getId())
                 .name(column.getName())
                 .position(column.getPosition())
-                .project(column.getProject()!=null?column.getProject().getId():null)
                 .build();
     }
 }
+

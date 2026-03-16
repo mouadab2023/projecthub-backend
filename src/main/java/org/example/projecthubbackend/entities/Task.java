@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.example.projecthubbackend.enumerations.Priority;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
@@ -36,14 +38,18 @@ public class Task {
     @NotNull
     private Priority priority;
 
+    private int position;
+
     @Valid
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Project project;
 
     @NotNull
     @Valid
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Column column;
 
     @CreationTimestamp

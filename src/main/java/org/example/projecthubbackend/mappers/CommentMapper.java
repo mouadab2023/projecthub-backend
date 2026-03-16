@@ -6,17 +6,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommentMapper {
-    public CommentDto toDTO(Comment comment){
+    public CommentDto toDTO(Comment comment) {
         return CommentDto.builder()
                 .id(comment.getId())
                 .comment(comment.getComment())
                 .commentedAt(comment.getCommentedAt())
-                .author(comment.getAuthor()!=null?comment.getAuthor().getId():null)
-                .task(comment.getTask()!=null?comment.getTask().getId():null)
+                .author(comment.getAuthor() != null ? comment.getAuthor().getId() : null)
                 .build();
     }
 
-    public Comment toEntityBasics(CommentDto commentDto){
+    public Comment toEntityBasics(CommentDto commentDto) {
         return Comment.builder()
                 .id(commentDto.getId())
                 .comment(commentDto.getComment())

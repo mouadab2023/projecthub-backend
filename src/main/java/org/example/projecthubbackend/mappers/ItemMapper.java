@@ -7,21 +7,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ItemMapper {
-    public ItemDto toDTO(Item item){
+    public ItemDto toDTO(Item item) {
         return ItemDto.builder().
                 id(item.getId()).
                 name(item.getName()).
                 isChecked(item.isChecked()).
                 position(item.getPosition()).
-                task(item.getTask()!=null?item.getTask().getId():null).
                 build();
     }
 
-    public Item toEntityBasics(ItemDto itemDto){
+    public Item toEntityBasics(ItemDto itemDto) {
         return Item.builder().
                 id(itemDto.getId()).
                 name(itemDto.getName()).
-                isChecked(itemDto.isChecked()).
+                isChecked(itemDto.getIsChecked()).
                 position(itemDto.getPosition()).
                 build();
     }

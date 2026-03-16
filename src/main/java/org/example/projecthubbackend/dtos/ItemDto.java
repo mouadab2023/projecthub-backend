@@ -1,25 +1,25 @@
 package org.example.projecthubbackend.dtos;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.example.projecthubbackend.dtos.groups.Update;
+import lombok.NoArgsConstructor;
+import org.example.projecthubbackend.dtos.groups.Create;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemDto {
-    @NotNull(groups = Update.class)
     private Long id;
 
-    @NotNull
+    @NotNull(groups = Create.class)
     private String name;
 
-    @NotNull
-    private boolean isChecked;
+    @NotNull(groups = Create.class)
+    private Boolean isChecked;
 
-    @NotNull
-    private int position;
+    private Integer position;
 
-    @NotNull
-    private Long task;
 }

@@ -3,6 +3,7 @@ package org.example.projecthubbackend.exceptions;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,6 +21,10 @@ public class GlobalExceptionHandler {
         // TODO send this stack trace to an observability tool
         exception.printStackTrace();
 
+        if (exception instanceof EntityNotFoundException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), exception.getMessage());
+            errorDetail.setProperty("description", exception.getMessage());
+        }
         if (exception instanceof BadCredentialsException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
             errorDetail.setProperty("description", "The username or password is incorrect");

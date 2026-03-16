@@ -13,8 +13,7 @@ public class TaskMapper {
                 .description(task.getDescription())
                 .dueDate(task.getDueDate())
                 .priority(task.getPriority())
-                .project(task.getProject().getId())
-                .column(task.getColumn().getId())
+                .position(task.getPosition())
                 .build();
     }
 

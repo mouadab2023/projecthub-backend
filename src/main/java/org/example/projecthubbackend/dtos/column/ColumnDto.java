@@ -1,24 +1,22 @@
-package org.example.projecthubbackend.dtos.project;
+package org.example.projecthubbackend.dtos.column;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.projecthubbackend.dtos.groups.Create;
 
-import java.time.LocalDate;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectDto {
+public class ColumnDto {
+
     Long id;
 
-    @NotBlank(groups = Create.class)
+    @NotNull(groups = Create.class)
     private String name;
 
-    private LocalDate creationDate;
+    private Integer position;
 }
-

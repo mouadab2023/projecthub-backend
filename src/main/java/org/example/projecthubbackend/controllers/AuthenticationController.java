@@ -9,6 +9,7 @@ import org.example.projecthubbackend.exceptions.MissingRefreshTokenException;
 import org.example.projecthubbackend.services.auth.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/auth")
@@ -23,13 +24,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ReadUserDto> signup(@RequestBody InsertUserDto insertUserDto) {
+    public ResponseEntity<ReadUserDto> signup(@RequestBody @Validated InsertUserDto insertUserDto) {
         ReadUserDto registeredUser = authenticationService.signup(insertUserDto);
         return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginUserDto loginUserDto, HttpServletResponse response) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Validated LoginUserDto loginUserDto, HttpServletResponse response) {
         LoginResponse loginResponse = authenticationService.login(loginUserDto, response);
         return ResponseEntity.ok(loginResponse);
     }
@@ -42,7 +43,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@CookieValue(value = "REFRESH_TOKEN", required = false) String refreshToken,HttpServletResponse response) {
+    public ResponseEntity<Void> logout(@CookieValue(value = "REFRESH_TOKEN", required = false) String refreshToken, HttpServletResponse response) {
         if (refreshToken == null) throw new MissingRefreshTokenException();
         authenticationService.logout(refreshToken, response);
         return ResponseEntity.noContent().build();

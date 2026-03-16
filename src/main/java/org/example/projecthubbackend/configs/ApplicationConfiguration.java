@@ -23,6 +23,7 @@ public class ApplicationConfiguration {
         configurer.setLocation(new FileSystemResource(".env"));
         return configurer;
     }
+
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

@@ -44,8 +44,9 @@ public class AuthenticationService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication.getPrincipal().toString());
 
-       return (User) authentication.getPrincipal();
+        return (User) authentication.getPrincipal();
     }
+
     public ReadUserDto signup(InsertUserDto input) {
         return userService.createUser(input);
     }
@@ -109,8 +110,9 @@ public class AuthenticationService {
                 .expiresIn(jwtService.getExpirationTime())
                 .user(userService.toReadUserDto(authenticatedUser)).build();
     }
+
     @Transactional
-    public void logout(String refreshToken,HttpServletResponse response) {
+    public void logout(String refreshToken, HttpServletResponse response) {
         RefreshToken fetchedRefreshToken = refreshTokenService.findByToken(refreshToken).orElseThrow(InvalidOrExpiredRefreshTokenException::new);
         fetchedRefreshToken.setValid(false);
         refreshTokenService.updateRefreshToken(fetchedRefreshToken);

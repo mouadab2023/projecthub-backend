@@ -2,35 +2,34 @@ package org.example.projecthubbackend.dtos.task;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.example.projecthubbackend.dtos.groups.Update;
+import lombok.NoArgsConstructor;
+import org.example.projecthubbackend.dtos.groups.Create;
 import org.example.projecthubbackend.enumerations.Priority;
 
 import java.time.LocalDate;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaskDto {
-    @NotNull(groups = Update.class)
     Long id;
 
-    @NotBlank
+    @NotBlank(groups = Create.class)
     private String title;
 
-    @NotBlank
+    @NotBlank(groups = Create.class)
     private String description;
 
-    @NotNull
+    private Integer position;
+
+    @NotNull(groups = Create.class)
     private LocalDate dueDate;
 
-    @NotNull
+    @NotNull(groups = Create.class)
     private Priority priority;
-
-    @NotNull
-    private Long project;
-
-    @NotNull
-    private Long column;
 
 }

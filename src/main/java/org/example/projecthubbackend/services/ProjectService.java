@@ -2,12 +2,12 @@ package org.example.projecthubbackend.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.example.projecthubbackend.dtos.column.ColumnDetailsDto;
+import org.example.projecthubbackend.dtos.project.ProjectBoardDto;
 import org.example.projecthubbackend.dtos.project.ProjectDetailsDto;
 import org.example.projecthubbackend.dtos.project.ProjectDto;
+import org.example.projecthubbackend.dtos.task.TaskDto;
 import org.example.projecthubbackend.entities.Column;
 import org.example.projecthubbackend.entities.Project;
 import org.example.projecthubbackend.entities.ProjectMember;
@@ -16,12 +16,17 @@ import org.example.projecthubbackend.enumerations.ProjectRole;
 import org.example.projecthubbackend.mappers.ColumnMapper;
 import org.example.projecthubbackend.mappers.ProjectMapper;
 import org.example.projecthubbackend.mappers.ProjectMemberMapper;
-import org.example.projecthubbackend.repositories.*;
+import org.example.projecthubbackend.mappers.TaskMapper;
+import org.example.projecthubbackend.repositories.ColumnRepository;
+import org.example.projecthubbackend.repositories.ProjectMemberRepository;
+import org.example.projecthubbackend.repositories.ProjectRepository;
+import org.example.projecthubbackend.repositories.TaskRepository;
 import org.example.projecthubbackend.services.auth.AuthenticationService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,8 +43,7 @@ public class ProjectService {
     final ProjectMemberMapper projectMemberMapper;
     final ColumnMapper columnMapper;
     private final TaskRepository taskRepository;
-    private final CommentRepository commentRepository;
-    private final ItemRepository itemRepository;
+    private final TaskMapper taskMapper;
 
 
     public List<ProjectDto> getAllProjects() {
@@ -48,15 +52,38 @@ public class ProjectService {
         return projects.stream().map(projectMapper::toDTO).collect(Collectors.toList());
     }
 
+    public ProjectBoardDto getBoard(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        List<ProjectMember> members = projectMemberRepository.findAllByProjectId(id);
+        List<Column> columns = columnRepository.findAllByProjectIdOrderByPositionAsc(id);
+        List<ColumnDetailsDto> columnDetailsDtos=new ArrayList<>();
+        for( Column column : columns) {
+            List<TaskDto> tasks = taskRepository.findAllByColumnIdOrderByPositionAsc(column.getId()).stream().map(taskMapper::toDTO).toList();
+            columnDetailsDtos.add(ColumnDetailsDto.builder().
+                    id(column.getId()).
+                    name(column.getName()).
+                    position(column.getPosition()).
+                    tasks(tasks).
+                    build());
+        }
+        return ProjectBoardDto.builder()
+                .id(id)
+                .name(project.getName())
+                .members(members.stream().map(projectMemberMapper::toDTO).collect(Collectors.toList()))
+                .columns(columnDetailsDtos).
+                creationDate(project.getCreationDate()).
+                build();
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or @projectSecurity.canViewProject(#id)")
-    public ProjectDetailsDto findProjectDetailsById(@NotNull @Min(1) Long id) {
-        Project project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        List<ProjectMember> members = projectMemberRepository.findAllByProject_Id(id);
-        List<Column> columns = columnRepository.findAllByProject_Id(id);
+    public ProjectDetailsDto findProjectDetailsById(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        List<ProjectMember> members = projectMemberRepository.findAllByProjectId(id);
+        List<Column> columns = columnRepository.findAllByProjectIdOrderByPositionAsc(id);
         return ProjectDetailsDto.builder().id(project.getId()).name(project.getName()).columns(columns.stream().map(columnMapper::toDTO).collect(Collectors.toList())).members(members.stream().map(projectMemberMapper::toDTO).collect(Collectors.toList())).creationDate(project.getCreationDate()).build();
     }
 
-    public ProjectDto createProject(@Valid ProjectDto projectDto) {
+    public ProjectDto createProject(ProjectDto projectDto) {
         Project newProject = Project.builder().name(projectDto.getName()).creationDate(LocalDate.now()).build();
 
         Project savedProject = projectRepository.save(newProject);
@@ -69,19 +96,17 @@ public class ProjectService {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or @projectSecurity.canEditProject(#id)")
-    public ProjectDto updateProject(@NotNull @Min(1) Long id, @Valid ProjectDto projectDto) {
+    public ProjectDto updateProject(Long id, ProjectDto projectDto) {
         Project project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        if (!projectDto.getName().equals(project.getName())) project.setName(projectDto.getName());
+        if (projectDto.getName() != null)
+            if (!projectDto.getName().equals(project.getName()))
+                project.setName(projectDto.getName());
         return projectMapper.toDTO(projectRepository.save(project));
     }
 
     @PreAuthorize(" hasRole('ROLE_ADMIN') or @projectSecurity.canDeleteProject(#id)")
-    public void removeProject(@NotNull @Min(1) Long id) {
-        projectMemberRepository.deleteByProject_Id(id);
-        commentRepository.deleteAllByTask_Project_Id(id);
-        itemRepository.deleteAllByTask_Project_Id(id);
-        taskRepository.deleteByProject_Id(id);
-        columnRepository.deleteByProject_Id(id);
-        projectRepository.deleteById(id);
+    public void removeProject(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        projectRepository.delete(project);
     }
 }

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 public class ProjectMemberMapper {
     public ProjectMemberDto toDTO(ProjectMember projectMember) {
         return ProjectMemberDto.builder().
-                id(projectMember.getId()).
-                project(projectMember.getUser().getId()).
-                user(projectMember.getUser().getId()).
+                username(projectMember.getUser().getFirstName()+" "+projectMember.getUser().getLastName()).
                 role(projectMember.getRole()).
                 build();
     }

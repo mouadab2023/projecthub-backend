@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.example.projecthubbackend.enumerations.ProjectRole;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ public class ProjectMember {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Project project;
 
     @NotNull
