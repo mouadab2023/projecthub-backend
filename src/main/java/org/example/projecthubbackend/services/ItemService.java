@@ -24,7 +24,7 @@ public class ItemService {
     private final TaskRepository taskRepository;
 
     public List<ItemDto> getAllItems(Long projectId, Long columnId, Long taskId) {
-        List<Item> items = itemRepository.findAllByTaskColumnProjectIdAndTaskColumnIdAndTaskId(projectId, columnId, taskId);
+        List<Item> items = itemRepository.findAllByTaskColumnProjectIdAndTaskColumnIdAndTaskIdOrderByPositionAsc(projectId, columnId, taskId);
         return items.stream().map(itemMapper::toDTO).collect(Collectors.toList());
     }
 

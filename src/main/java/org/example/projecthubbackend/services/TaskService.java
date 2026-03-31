@@ -51,7 +51,7 @@ public class TaskService {
     @PreAuthorize("hasRole('ROLE_ADMIN') or @projectSecurity.canViewTask(#id)")
     public TaskDetailsDto findTaskDetails(Long projectId, Long columnId, Long id) {
         Task task = taskRepository.findByProjectIdAndColumnIdAndId(projectId, columnId, id).orElseThrow(() -> new EntityNotFoundException("Task not found"));
-        List<Item> items = itemRepository.findAllByTaskColumnProjectIdAndTaskColumnIdAndTaskId(projectId, columnId, id);
+        List<Item> items = itemRepository.findAllByTaskColumnProjectIdAndTaskColumnIdAndTaskIdOrderByPositionAsc(projectId, columnId, id);
         List<Comment> comments = commentRepository.findAllByTaskColumnProjectIdAndTaskColumnIdAndTaskId(projectId, columnId, id);
         List<TaskAssignee> taskAssignees = taskAssigneeRepository.findAllByTask(task);
         return TaskDetailsDto.builder().

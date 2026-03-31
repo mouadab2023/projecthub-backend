@@ -1,6 +1,7 @@
 package org.example.projecthubbackend.repositories;
 
 import org.example.projecthubbackend.entities.Item;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,7 +23,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("SELECT max(i.position) FROM Item i where i.task.id=:taskId")
     Integer findMaxPosition(Long taskId);
 
-    List<Item> findAllByTaskColumnProjectIdAndTaskColumnIdAndTaskId(Long taskColumnProjectId, Long taskColumnId, Long taskId);
+    List<Item> findAllByTaskColumnProjectIdAndTaskColumnIdAndTaskIdOrderByPositionAsc(Long taskColumnProjectId, Long taskColumnId, Long taskId);
 
     Optional<Item> findByTaskColumnProjectIdAndTaskColumnIdAndTaskIdAndId(Long projectId, Long columnId, Long taskId, Long id);
 
